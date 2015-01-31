@@ -62,7 +62,7 @@ class DbTransfer(object):
         query_sql = query_head + ' SET u = CASE port' + query_sub_when + \
                     ' END, d = CASE port' + query_sub_when2 + \
                     ' END, t = ' + str(int(last_time)) + \
-                    ' WHERE port IN (%s)' % query_sub_in
+                    ' WHERE port IN (%s) AND node_id = 2' % query_sub_in
         #print query_sql
         conn = cymysql.connect(host=Config.MYSQL_HOST, port=Config.MYSQL_PORT, user=Config.MYSQL_USER,
                                passwd=Config.MYSQL_PASS, db=Config.MYSQL_DB, charset='utf8')
@@ -78,7 +78,7 @@ class DbTransfer(object):
         conn = cymysql.connect(host=Config.MYSQL_HOST, port=Config.MYSQL_PORT, user=Config.MYSQL_USER,
                                passwd=Config.MYSQL_PASS, db=Config.MYSQL_DB, charset='utf8')
         cur = conn.cursor()
-        cur.execute("SELECT port, u, d, transfer_enable, passwd, switch, enable FROM user")
+        cur.execute("SELECT port, u, d, transfer_enable, passwd, switch, enable FROM user WHERE node_id = '2'")
         rows = []
         for r in cur.fetchall():
             rows.append(list(r))
